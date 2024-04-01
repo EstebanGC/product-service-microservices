@@ -4,6 +4,7 @@ import com.quarkdev.productservice.dto.ProductRequest;
 import com.quarkdev.productservice.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,36 +16,34 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.junit.jupiter.TestcontainersExtension;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(TestcontainersExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
 class ProductServiceApplicationTests {
 	@Container
 	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
-
 	@Autowired
 	private MockMvc mockMvc;
-
 	@Autowired
 	private ObjectMapper objectMapper;
-
 	@Autowired
 	private ProductRepository productRepository;
-
-	static {
-		mongoDBContainer.start();
-	}
-
+//
+//	static {
+//		mongoDBContainer.start();
+//	}
 
 	@DynamicPropertySource
-	static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
-		dynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+	static void setProperties(DynamicPropertyRegistry dymDynamicPropertyRegistry) {
+		dymDynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
 	}
 
 	@Test
@@ -61,7 +60,7 @@ class ProductServiceApplicationTests {
 	private ProductRequest getProductRequest() {
 		return ProductRequest.builder()
 				.name("iPhone 13")
-				.description("iPhone13")
+				.description("iPhone 13")
 				.price(BigDecimal.valueOf(1200))
 				.build();
 	}
